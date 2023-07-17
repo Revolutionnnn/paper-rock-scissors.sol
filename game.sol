@@ -41,6 +41,10 @@ contract RockPaperScissors {
     if (gameWinner == msg.sender) {
       winner = gameWinner;
       claimPrize();
+    } else if (gameWinner == address(1)) {
+        winner = gameWinner;
+    } else {
+        winner = gameWinner;
     }
   }
 
@@ -56,20 +60,21 @@ contract RockPaperScissors {
     }
   }
 
-  // La función para determinar el ganador
-  function determineWinner() private view returns (address) {
-    if (currentPlayerMove == computerMove) {
-      return address(0);
-    } else if (currentPlayerMove == Move.Rock && computerMove == Move.Scissors) {
-      return msg.sender;
-    } else if (currentPlayerMove == Move.Paper && computerMove == Move.Rock) {
-      return msg.sender;
-    } else if (currentPlayerMove == Move.Scissors && computerMove == Move.Paper) {
-      return msg.sender;
-    } else {
-      return address(0);
+    // La función para determinar el ganador
+    function determineWinner() private view returns (address) {
+        if (currentPlayerMove == computerMove) {
+            return address(0); // Empate
+        } else if (
+            (currentPlayerMove == Move.Rock && computerMove == Move.Scissors) ||
+            (currentPlayerMove == Move.Paper && computerMove == Move.Rock) ||
+            (currentPlayerMove == Move.Scissors && computerMove == Move.Paper)
+        ) {
+            return msg.sender; // Jugador gana
+        } else {
+            // El caso restante es que la computadora gana
+            return address(1); // Puedes especificar una dirección específica para representar la computadora
+        }
     }
-  }
 
   // La función para reclamar el premio
   function claimPrize() public {
